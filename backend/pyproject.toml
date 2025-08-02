@@ -1,0 +1,27 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "HaroldR23",email = "ahsro99@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi (>=0.116.1,<0.117.0)",
+    "sqlalchemy (>=2.0.42,<3.0.0)",
+    "python-dotenv (>=1.1.1,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.4.1"
+
+
+[tool.poetry.group.dev.dependencies]
+alembic = "^1.16.4"
+

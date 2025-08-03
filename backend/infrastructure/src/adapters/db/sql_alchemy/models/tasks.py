@@ -1,4 +1,4 @@
-from models.base import Base
+from .base import Base
 
 from typing import TYPE_CHECKING, List
 from enum import Enum

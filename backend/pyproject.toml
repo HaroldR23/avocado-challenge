@@ -26,3 +26,9 @@ pytest = "^8.4.1"
 [tool.poetry.group.dev.dependencies]
 alembic = "^1.16.4"
 
+[tool.pytest.ini_options]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+testpaths = [
+    "use_cases/tests",
+]

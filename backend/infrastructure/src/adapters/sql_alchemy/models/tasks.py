@@ -1,6 +1,6 @@
-from .base import Base
-
 from typing import TYPE_CHECKING, List
+from infrastructure.src.adapters.sql_alchemy.models.base import Base
+
 from enum import Enum
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Enum as SqlEnum
@@ -12,8 +12,8 @@ class Priority(Enum):
     HIGH = "alta"
 
 if TYPE_CHECKING:
-	from .users import User
-	from .comments import Comment
+    from infrastructure.src.adapters.sql_alchemy.models.users import User
+    from infrastructure.src.adapters.sql_alchemy.models.comments import Comment
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -31,3 +31,6 @@ class Task(Base):
     created_by: Mapped["User"] = relationship("User", foreign_keys=[created_by_id])
     assigned_to: Mapped["User"] = relationship("User", foreign_keys=[assigned_to_id])
     comments: Mapped[List["Comment"]] = relationship()
+
+    created_at: Mapped[str] = mapped_column(DateTime, nullable=False)
+    updated_at: Mapped[str] = mapped_column(DateTime, nullable=False)

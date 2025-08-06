@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from http import HTTPStatus
 
 from use_cases.src.exceptions.user_exceptions import UserNotFoundError
-from use_cases.src.exceptions.task_exceptions import EmptyTaskTitleError
+from use_cases.src.exceptions.task_exceptions import EmptyTaskTitleError, TaskNotFoundError
 from domain.src.ports.repositories import RepositoryException
 
 def register_exception_handler(app: FastAPI):
@@ -27,4 +27,11 @@ def register_exception_handler(app: FastAPI):
 		return JSONResponse(
 			status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
 			content={"detail": exc.message}
+		)
+
+	@app.exception_handler(TaskNotFoundError)
+	def task_not_found_exception_handler(request: Request, exc: TaskNotFoundError):
+		return JSONResponse(
+			status_code=HTTPStatus.NOT_FOUND,
+			content={"detail": exc.message, "task_id": exc.task_id}
 		)

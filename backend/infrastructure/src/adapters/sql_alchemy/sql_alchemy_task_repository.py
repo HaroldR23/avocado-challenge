@@ -127,3 +127,26 @@ class SQLAlchemyTaskRepository(TaskRepository):
         except SQLAlchemyError as e:
             self.session.rollback()
             raise RepositoryException(f"Error deleting task: {e}") from e
+
+    def get_by_id(self, task_id: int) -> Optional[Task]:
+        try:
+            task = self.session.query(TaskModel).filter(TaskModel.id == task_id).first()
+
+            if not task:
+                return None
+            
+            return Task(
+                id=task.id,
+                title=task.title,
+                description=task.description,
+                priority=task.priority.value if hasattr(task.priority, 'value') else str(task.priority),
+                due_date=task.due_date,
+                completed=task.completed,
+                created_by=User(id=task.created_by.id, username=task.created_by.username, email=task.created_by.email),
+                assigned_to=User(id=task.assigned_to.id, username=task.assigned_to.username, email=task.assigned_to.email) if task.assigned_to else None,
+                created_at=task.created_at,
+                updated_at=task.updated_at
+            )
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            raise RepositoryException(f"Error getting task by ID: {e}") from e

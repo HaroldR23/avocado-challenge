@@ -3,6 +3,8 @@ from sqlalchemy.orm import Session
 
 from infrastructure.src.adapters.sql_alchemy.session import get_db
 from use_cases.src.task.create.use_case import CreateTaskUseCase
+from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase
+
 from infrastructure.src.adapters.sql_alchemy.sql_alchemy_task_repository import SQLAlchemyTaskRepository
 from infrastructure.src.adapters.sql_alchemy.sql_alchemy_user_repository import SQLAlchemyUserRepository
 
@@ -13,3 +15,8 @@ def get_create_task_use_case(db: Session = Depends(get_db)) -> CreateTaskUseCase
         user_repository=SQLAlchemyUserRepository(session=db)
     )
     return note_service
+
+def get_get_tasks_use_case(db: Session = Depends(get_db)) -> GetTasksUseCase:
+    return GetTasksUseCase(
+        task_repository=SQLAlchemyTaskRepository(session=db)
+    )

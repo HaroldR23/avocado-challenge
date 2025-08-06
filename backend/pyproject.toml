@@ -11,7 +11,9 @@ dependencies = [
     "fastapi (>=0.116.1,<0.117.0)",
     "sqlalchemy (>=2.0.42,<3.0.0)",
     "python-dotenv (>=1.1.1,<2.0.0)",
-    "psycopg2-binary (>=2.9.10,<3.0.0)"
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "uvicorn (>=0.35.0,<0.36.0)",
+    "httpx (>=0.28.1,<0.29.0)"
 ]
 
 
@@ -31,5 +33,6 @@ python_files = ["test_*.py"]
 pythonpath = ["."]
 testpaths = [
     "use_cases/tests",
-    "infrastructure/tests"
+    "infrastructure/tests",
+    "controllers/tests"
 ]

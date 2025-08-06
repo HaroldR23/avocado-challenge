@@ -1,4 +1,5 @@
 class UserNotFoundError(Exception):
-	def __init__(self, user_id: int):
-		super().__init__(f"User with ID {user_id} not found.")
-		self.user_id = user_id
+    def __init__(self, user_id: int):
+        self.message = f"User with ID {user_id} not found."
+        super().__init__(self.message)
+        self.user_id = user_id

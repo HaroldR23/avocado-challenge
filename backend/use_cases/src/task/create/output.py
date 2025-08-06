@@ -6,7 +6,7 @@ from domain.src.entities.user import User
 
 @dataclass
 class CreateTaskOutput:
-    id: Optional[int]
+    id: int
     title: str
     description: str
     created_by: User

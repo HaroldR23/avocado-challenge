@@ -23,3 +23,6 @@ class TaskRepository(ABC):
         order: str = "desc"
     ) -> tuple[list[Task], int]:
         ...
+
+    def delete(self, task_id: int) -> Optional[Task]:
+        ...

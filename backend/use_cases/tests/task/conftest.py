@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock
 
 from domain.src.ports.repositories import TaskRepository, UserRepository
-from domain.src.entities import User
+from domain.src.entities import User, Task
 from use_cases.src.task.create import CreateTaskInput
 from use_cases.src.task.get_with_filters import GetTasksInput
 
@@ -45,4 +45,19 @@ def get_tasks_input():
         page=1,
         limit=10,
         order="asc"
+    )
+
+@pytest.fixture
+def mock_task():
+     return Task(
+        id=1,
+        title="Test Task",
+        description="This is a test task",
+        priority="MEDIUM",
+        due_date=None,
+        created_by=User(id=1, username="creator", email="creator@example.com"),
+        created_at="2023-10-01T00:00:00Z",
+        updated_at="2023-10-01T00:00:00Z",
+        assigned_to=None,
+        comments=[]
     )

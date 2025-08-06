@@ -1,18 +1,24 @@
 from fastapi import APIRouter, Depends, Query
 
+from use_cases.src.task.delete.use_case import DeleteTaskUseCase
 from controllers.src.dtos.task_dtos import (
-        CreateTaskDTO, 
-		CreateTaskResponseDTO, 
-		CreatedByDTO, 
-		AssignedToDTO, 
-		GetTasksInputDTO,
-		GetTasksResponseDTO, 
-        GetTaskResponseDTO
-    )
+	CreateTaskDTO, 
+	CreateTaskResponseDTO, 
+	CreatedByDTO, 
+	AssignedToDTO,
+	DeleteTaskResponseDTO, 
+	GetTasksInputDTO,
+	GetTasksResponseDTO, 
+	GetTaskResponseDTO
+)
 from use_cases.src.task.create.use_case import CreateTaskUseCase
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase, GetTasksInput
 from use_cases.src.task.create.input import CreateTaskInput
-from controllers.src.dependencies.tasks_dependencies import get_create_task_use_case, get_get_tasks_use_case
+from controllers.src.dependencies.tasks_dependencies import (
+	get_create_task_use_case, 
+	get_get_tasks_use_case, 
+	get_delete_task_use_case
+)
 
 tasks_router = APIRouter()
 
@@ -45,7 +51,7 @@ def create_task(
 				)
 		)
 
-@tasks_router.get("/tasks")
+@tasks_router.get("/tasks", tags=["Tasks"])
 def get_tasks(
     input_data: GetTasksInputDTO = Depends(),
     get_tasks_use_case: GetTasksUseCase = Depends(get_get_tasks_use_case)
@@ -89,3 +95,11 @@ def get_tasks(
 			page=tasks.page,
 			limit=tasks.limit
 		)
+
+@tasks_router.delete("/tasks/{task_id}", tags=["Tasks"])
+def delete_task(
+	task_id: int, 
+	delete_task_use_case: DeleteTaskUseCase = Depends(get_delete_task_use_case)
+):
+    delete_task_use_case(task_id=task_id)
+    return DeleteTaskResponseDTO()

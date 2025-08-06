@@ -1,6 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from use_cases.src.task.delete.use_case import DeleteTaskUseCase
 from infrastructure.src.adapters.sql_alchemy.session import get_db
 from use_cases.src.task.create.use_case import CreateTaskUseCase
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase
@@ -20,3 +21,8 @@ def get_get_tasks_use_case(db: Session = Depends(get_db)) -> GetTasksUseCase:
     return GetTasksUseCase(
         task_repository=SQLAlchemyTaskRepository(session=db)
     )
+
+def get_delete_task_use_case(db: Session = Depends(get_db)) -> DeleteTaskUseCase:
+	return DeleteTaskUseCase(
+			task_repository=SQLAlchemyTaskRepository(session=db)
+	)

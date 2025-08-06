@@ -58,3 +58,7 @@ class GetTasksInputDTO(BaseModel):
     page: int = 1
     limit: int = 10
     order: str = "desc"
+
+
+class DeleteTaskResponseDTO(BaseModel):
+    message: str = "Task deleted successfully"

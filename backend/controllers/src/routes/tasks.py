@@ -1,9 +1,18 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 
-from controllers.src.dtos.task_dtos import CreateTaskDTO, CreateTaskResponseDTO, CreatedByDTO, AssignedToDTO
+from controllers.src.dtos.task_dtos import (
+        CreateTaskDTO, 
+		CreateTaskResponseDTO, 
+		CreatedByDTO, 
+		AssignedToDTO, 
+		GetTasksInputDTO,
+		GetTasksResponseDTO, 
+        GetTaskResponseDTO
+    )
 from use_cases.src.task.create.use_case import CreateTaskUseCase
+from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase, GetTasksInput
 from use_cases.src.task.create.input import CreateTaskInput
-from controllers.src.dependencies.tasks_dependencies import get_create_task_use_case
+from controllers.src.dependencies.tasks_dependencies import get_create_task_use_case, get_get_tasks_use_case
 
 tasks_router = APIRouter()
 
@@ -34,4 +43,49 @@ def create_task(
 					id=created_task.created_by.id,
 					username=created_task.created_by.username
 				)
+		)
+
+@tasks_router.get("/tasks")
+def get_tasks(
+    input_data: GetTasksInputDTO = Depends(),
+    get_tasks_use_case: GetTasksUseCase = Depends(get_get_tasks_use_case)
+	):
+
+		get_tasks_input = GetTasksInput(
+			completed=input_data.status,
+			priority=input_data.priority,
+			assigned_to_id=input_data.assigned_to_id,
+			created_by_id=input_data.created_by_id,
+			due_date_before=input_data.due_date_before,
+			due_date_after=input_data.due_date_after,
+			page=input_data.page,
+			limit=input_data.limit,
+			order=input_data.order
+		)
+
+		tasks = get_tasks_use_case(get_tasks_input)
+
+		return GetTasksResponseDTO(
+			tasks=[GetTaskResponseDTO(
+				assigned_to=AssignedToDTO(
+					id=task.assigned_to.id, 
+					username=task.assigned_to.username
+				) if task.assigned_to else None,
+				comments=task.comments,
+				created_at=task.created_at,
+				created_by=CreatedByDTO(
+					id=task.created_by.id,
+					username=task.created_by.username
+				),
+				completed=task.completed,
+				description=task.description,
+				due_date=task.due_date,
+				id=task.id,
+				priority=task.priority,
+				title=task.title,
+				updated_at=task.updated_at
+			) for task in tasks.tasks],
+			total=tasks.total,
+			page=tasks.page,
+			limit=tasks.limit
 		)

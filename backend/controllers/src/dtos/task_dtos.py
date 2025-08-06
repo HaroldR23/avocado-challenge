@@ -17,13 +17,44 @@ class AssignedToDTO(CreatedByDTO):
     ...
 
 class CreateTaskResponseDTO(BaseModel):
-    id: int
+    title: str
+    description: str
+    created_by: CreatedByDTO
+    completed: bool
+    id: Optional[int] = None
+    priority: Optional[str] = None
+    created_at: str
+    due_date: Optional[str] = None
+    assigned_to: Optional[AssignedToDTO] = None
+    comments: list = []
+
+
+class GetTaskResponseDTO(BaseModel):
+    id: Optional[int]
     title: str
     description: str
     created_by: CreatedByDTO
     completed: bool
     priority: Optional[str] = None
     created_at: str
+    updated_at: Optional[str] = None
     due_date: Optional[str] = None
     assigned_to: Optional[AssignedToDTO] = None
     comments: list = []
+
+class GetTasksResponseDTO(BaseModel):
+    tasks: list[GetTaskResponseDTO]
+    total: int
+    page: int
+    limit: int
+
+class GetTasksInputDTO(BaseModel):
+    status: Optional[str] = None
+    priority: Optional[str] = None
+    assigned_to_id: Optional[int] = None
+    created_by_id: Optional[int] = None
+    due_date_before: Optional[str] = None
+    due_date_after: Optional[str] = None
+    page: int = 1
+    limit: int = 10
+    order: str = "desc"

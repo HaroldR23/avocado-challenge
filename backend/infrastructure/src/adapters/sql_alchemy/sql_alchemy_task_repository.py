@@ -3,8 +3,9 @@ from domain.src.entities import Task, User
 from infrastructure.src.adapters.sql_alchemy.models import Task as TaskModel
 
 from sqlalchemy.orm import Session
+from sqlalchemy import asc, desc
 from sqlalchemy.exc import SQLAlchemyError
-
+from typing import Tuple
 
 class SQLAlchemyTaskRepository(TaskRepository):
     def __init__(self, session: Session):
@@ -50,3 +51,54 @@ class SQLAlchemyTaskRepository(TaskRepository):
         except SQLAlchemyError as e:
             self.session.rollback()
             raise RepositoryException(f"Error creating task: {e}") from e
+
+
+    def find_all_with_filters(
+        self, completed, priority, assigned_to, created_by,
+        due_date_before, due_date_after, page, limit, order, sort_by="created_at"
+    ) -> Tuple[list[Task], int]:
+        try:
+            query = self.session.query(TaskModel)
+
+            if completed:
+                query = query.filter(TaskModel.completed == completed)
+            if priority:
+                query = query.filter(TaskModel.priority == priority)
+            if assigned_to:
+                query = query.filter(TaskModel.assigned_to_id == assigned_to)
+            if created_by:
+                query = query.filter(TaskModel.created_by_id == created_by)
+            if due_date_before:
+                query = query.filter(TaskModel.due_date <= due_date_before)
+            if due_date_after:
+                query = query.filter(TaskModel.due_date >= due_date_after)
+
+            total = query.count()
+
+            if order == "asc":
+                query = query.order_by(asc(getattr(TaskModel, sort_by)))
+            elif order == "desc":
+                query = query.order_by(desc(getattr(TaskModel, sort_by)))
+
+            query = query.offset((page - 1) * limit).limit(limit)
+
+            tasks = [
+                Task(
+                    id=t.id,
+                    title=t.title,
+                    description=t.description,
+                    priority=t.priority.value if hasattr(t.priority, 'value') else str(t.priority),
+                    due_date=t.due_date,
+                    completed=t.completed,
+                    created_by=User(id=t.created_by.id, username=t.created_by.username, email=t.created_by.email),
+                    assigned_to=User(id=t.assigned_to.id, username=t.assigned_to.username, email=t.assigned_to.email) if t.assigned_to else None,
+                    created_at=t.created_at,
+                    updated_at=t.updated_at
+                )
+                for t in query.all()
+            ]
+
+            return tasks, total
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            raise RepositoryException(f"Error getting tasks: {e}") from e

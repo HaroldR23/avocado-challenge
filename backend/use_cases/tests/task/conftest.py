@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import MagicMock
 
-from domain.src.ports.repositories import TaskRepository, UserRepository, RepositoryException
-from domain.src.entities import Task, User
-from use_cases.src.exceptions import UserNotFoundError, EmptyTaskTitleError
-from use_cases.src.task.create import CreateTaskInput, CreateTaskUseCase, CreateTaskOutput
+from domain.src.ports.repositories import TaskRepository, UserRepository
+from domain.src.entities import User
+from use_cases.src.task.create import CreateTaskInput
+from use_cases.src.task.get_with_filters import GetTasksInput
 
 @pytest.fixture
 def mock_task_repository() -> TaskRepository:
@@ -32,3 +32,17 @@ def task_creator_user() -> User:
 		password_hash="hashed_password",
 		role="USER"
 	)
+
+@pytest.fixture
+def get_tasks_input():
+    return GetTasksInput(
+        completed=None,
+        priority=None,
+        assigned_to_id=None,
+        created_by_id=None,
+        due_date_before=None,
+        due_date_after=None,
+        page=1,
+        limit=10,
+        order="asc"
+    )

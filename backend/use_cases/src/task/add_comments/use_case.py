@@ -4,7 +4,7 @@ from domain.src.ports.repositories import TaskRepository, CommentRepository
 from use_cases.src.exceptions import TaskNotFoundError, EmptyCommentError
 from domain.src.entities.comment import Comment
 
-class AddCommentsToTask:
+class AddCommentsToTaskUseCase:
 	def __init__(self, task_repository: TaskRepository, comment_repository: CommentRepository):
 		self.task_repository = task_repository
 		self.comment_repository = comment_repository

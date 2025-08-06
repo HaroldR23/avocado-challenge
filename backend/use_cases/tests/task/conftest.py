@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 
 from domain.src.ports.repositories import TaskRepository, UserRepository, CommentRepository
 from domain.src.entities import User, Task, Comment
-from use_cases.src.task.add_comments.use_case import AddCommentsToTask
+from use_cases.src.task.add_comments.use_case import AddCommentsToTaskUseCase
 from use_cases.src.task.create import CreateTaskInput
 from use_cases.src.task.get_with_filters import GetTasksInput
 
@@ -70,7 +70,7 @@ def mock_comment_repository():
 
 @pytest.fixture
 def add_comments_use_case(mock_task_repository, mock_comment_repository):
-    return AddCommentsToTask(
+    return AddCommentsToTaskUseCase(
             task_repository=mock_task_repository, 
             comment_repository=mock_comment_repository
         )

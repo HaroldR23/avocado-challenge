@@ -26,3 +26,6 @@ class TaskRepository(ABC):
 
     def delete(self, task_id: int) -> Optional[Task]:
         ...
+
+    def get_by_id(self, task_id: int) -> Optional[Task]:
+        ...

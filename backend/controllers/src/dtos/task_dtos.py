@@ -62,3 +62,9 @@ class GetTasksInputDTO(BaseModel):
 
 class DeleteTaskResponseDTO(BaseModel):
     message: str = "Task deleted successfully"
+
+class AddCommentsInputDTO(BaseModel):
+    content: str
+
+class AddCommentsResponseDTO(BaseModel):
+    message: str = "Comment added successfully"

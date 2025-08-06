@@ -9,15 +9,18 @@ from controllers.src.dtos.task_dtos import (
 	DeleteTaskResponseDTO, 
 	GetTasksInputDTO,
 	GetTasksResponseDTO, 
-	GetTaskResponseDTO
+	GetTaskResponseDTO,
+	AddCommentsInputDTO,
+	AddCommentsResponseDTO
 )
-from use_cases.src.task.create.use_case import CreateTaskUseCase
+from use_cases.src.task.create.use_case import CreateTaskUseCase, CreateTaskInput
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase, GetTasksInput
-from use_cases.src.task.create.input import CreateTaskInput
+from use_cases.src.task.add_comments.use_case import AddCommentsToTaskUseCase, AddCommentsInput
 from controllers.src.dependencies.tasks_dependencies import (
 	get_create_task_use_case, 
 	get_get_tasks_use_case, 
-	get_delete_task_use_case
+	get_delete_task_use_case,
+	get_add_comment_to_task_use_case
 )
 
 tasks_router = APIRouter()
@@ -53,8 +56,8 @@ def create_task(
 
 @tasks_router.get("/tasks", tags=["Tasks"])
 def get_tasks(
-    input_data: GetTasksInputDTO = Depends(),
-    get_tasks_use_case: GetTasksUseCase = Depends(get_get_tasks_use_case)
+		input_data: GetTasksInputDTO = Depends(),
+		get_tasks_use_case: GetTasksUseCase = Depends(get_get_tasks_use_case)
 	):
 
 		get_tasks_input = GetTasksInput(
@@ -103,3 +106,16 @@ def delete_task(
 ):
     delete_task_use_case(task_id=task_id)
     return DeleteTaskResponseDTO()
+
+@tasks_router.post("/tasks/{task_id}/comments", tags=["Tasks"])
+def add_comment_to_task(
+		task_id: int, 
+		add_comments_input: AddCommentsInputDTO, 
+		add_comment_to_task_use_case: AddCommentsToTaskUseCase = Depends(get_add_comment_to_task_use_case)
+	):
+		comment_input = AddCommentsInput(
+			task_id=task_id,
+			content=add_comments_input.content
+		)
+		add_comment_to_task_use_case(comment_input=comment_input)
+		return AddCommentsResponseDTO()

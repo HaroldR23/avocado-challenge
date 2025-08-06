@@ -4,6 +4,7 @@ from http import HTTPStatus
 
 from use_cases.src.exceptions.user_exceptions import UserNotFoundError
 from use_cases.src.exceptions.task_exceptions import EmptyTaskTitleError, TaskNotFoundError
+from use_cases.src.exceptions.comment_exceptions import EmptyCommentError
 from domain.src.ports.repositories import RepositoryException
 
 def register_exception_handler(app: FastAPI):
@@ -34,4 +35,11 @@ def register_exception_handler(app: FastAPI):
 		return JSONResponse(
 			status_code=HTTPStatus.NOT_FOUND,
 			content={"detail": exc.message, "task_id": exc.task_id}
+		)
+
+	@app.exception_handler(EmptyCommentError)
+	def empty_comment_exception_handler(request: Request, exc: EmptyCommentError):
+		return JSONResponse(
+			status_code=HTTPStatus.BAD_REQUEST,
+			content={"detail": exc.message}
 		)

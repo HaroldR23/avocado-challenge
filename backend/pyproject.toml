@@ -31,4 +31,5 @@ python_files = ["test_*.py"]
 pythonpath = ["."]
 testpaths = [
     "use_cases/tests",
+    "infrastructure/tests"
 ]

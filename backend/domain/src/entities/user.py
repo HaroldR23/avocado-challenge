@@ -7,5 +7,5 @@ class User:
     id: int
     username: str
     email: str
-    role: str
+    role: Optional[str] = None
     password_hash: Optional[str] = None

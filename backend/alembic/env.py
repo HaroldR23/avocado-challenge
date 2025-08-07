@@ -5,11 +5,11 @@ from sqlalchemy import pool
 
 from settings.constants import DATABASE_URL
 
-from infrastructure.src.adapters.db.sql_alchemy.models.base import Base
-from infrastructure.src.adapters.db.sql_alchemy.models.comments import Comment
-from infrastructure.src.adapters.db.sql_alchemy.models.roles import Role
-from infrastructure.src.adapters.db.sql_alchemy.models.users import User
-from infrastructure.src.adapters.db.sql_alchemy.models.tasks import Task
+from infrastructure.src.adapters.sql_alchemy.models.base import Base
+from infrastructure.src.adapters.sql_alchemy.models.comments import Comment
+from infrastructure.src.adapters.sql_alchemy.models.roles import Role
+from infrastructure.src.adapters.sql_alchemy.models.tasks import Task
+from infrastructure.src.adapters.sql_alchemy.models.users import User
 
 from alembic import context
 

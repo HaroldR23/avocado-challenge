@@ -32,6 +32,7 @@ class CreateTaskUseCase:
             priority=task_input.priority,
             due_date=task_input.due_date,
             created_by=task_creator_user,
+            assigned_to=user_assigned_to_task,
             created_at=Datetime.now().isoformat(),
             updated_at=Datetime.now().isoformat()
         )
@@ -46,10 +47,10 @@ class CreateTaskUseCase:
             title=created_task.title,
             description=created_task.description,
             priority=created_task.priority,
-            due_date=created_task.due_date,
+            due_date=str(created_task.due_date),
             assigned_to=created_task.assigned_to,
             created_by=created_task.created_by,
-            created_at=created_task.created_at,
+            created_at=str(created_task.created_at),
             comments=created_task.comments,
             completed=created_task.completed
         )

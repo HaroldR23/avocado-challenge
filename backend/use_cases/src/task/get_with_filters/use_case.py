@@ -33,7 +33,7 @@ class GetTasksUseCase:
                     title=t.title,
                     description=t.description,
                     priority=t.priority,
-                    due_date=t.due_date,
+                    due_date=str(t.due_date) if t.due_date else None,
                     completed=t.completed,
                     created_by=User(
                         id=t.created_by.id,
@@ -45,8 +45,9 @@ class GetTasksUseCase:
                         username=t.assigned_to.username,
                         email=t.assigned_to.email,
                     ) if t.assigned_to else None,
-                    created_at=t.created_at,
-                    updated_at=t.updated_at
+                    created_at=str(t.created_at),
+                    updated_at=str(t.updated_at),
+                    comments=[c.content for c in t.comments] if t.comments else []
                 )
                 for t in tasks
             ],

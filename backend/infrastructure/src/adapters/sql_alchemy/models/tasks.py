@@ -30,7 +30,7 @@ class Task(Base):
 
     created_by: Mapped["User"] = relationship("User", foreign_keys=[created_by_id])
     assigned_to: Mapped["User"] = relationship("User", foreign_keys=[assigned_to_id])
-    comments: Mapped[List["Comment"]] = relationship()
+    comments: Mapped[List["Comment"]] = relationship(cascade="all, delete-orphan")
 
     created_at: Mapped[str] = mapped_column(DateTime, nullable=False)
     updated_at: Mapped[str] = mapped_column(DateTime, nullable=False)

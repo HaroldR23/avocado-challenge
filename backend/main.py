@@ -1,7 +1,9 @@
 from controllers.src.create_app import create_app
+from scripts.create_default_user import create_default_user
 import uvicorn
 
 app = create_app()
+create_default_user()
 
 if __name__ == "__main__":
     import uvicorn

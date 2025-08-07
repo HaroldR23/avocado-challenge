@@ -1,5 +1,6 @@
 from domain.src.ports.repositories.exceptions import RepositoryException
 from use_cases.src.task.get_task_stats.output import GetTaskStatsOutput
+from use_cases.src.task.get_with_filters import GetTasksInput
 from domain.src.ports.repositories import TaskRepository
 
 class GetTaskStatsUseCase:
@@ -8,8 +9,10 @@ class GetTaskStatsUseCase:
 
 	def __call__(self) -> GetTaskStatsOutput:
 		try:
-			total_tasks = self.task_repository.find_all_with_filters(limit=100)[1]
-			completed_tasks = self.task_repository.find_all_with_filters(completed="completed", limit=100)[1]
+			get_input_total_tasks = GetTasksInput(limit=100)
+			get_input_completed_tasks = GetTasksInput(completed="completed", limit=100)
+			total_tasks = self.task_repository.find_all_with_filters(**get_input_total_tasks.__dict__)[1]
+			completed_tasks = self.task_repository.find_all_with_filters(**get_input_completed_tasks.__dict__)[1]
 			completion_rate = (completed_tasks / total_tasks * 100) if total_tasks > 0 else 0
 
 			return GetTaskStatsOutput(

@@ -12,19 +12,23 @@ from controllers.src.dtos.task_dtos import (
 	GetTaskResponseDTO,
 	AddCommentsInputDTO,
 	AddCommentsResponseDTO,
-	GetTaskStatsResponseDTO
+	GetTaskStatsResponseDTO,
+	UpdateTaskDTO,
+	UpdateTaskResponseDTO
 )
 from use_cases.src.task.create.use_case import CreateTaskUseCase, CreateTaskInput
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase, GetTasksInput
 from use_cases.src.task.add_comments.use_case import AddCommentsToTaskUseCase, AddCommentsInput
 from use_cases.src.task.get_task_stats.use_case import GetTaskStatsUseCase
+from use_cases.src.task.update.use_case import UpdateTaskUseCase, UpdateTaskInput
 
 from controllers.src.dependencies.tasks_dependencies import (
 	get_create_task_use_case, 
 	get_get_tasks_use_case, 
 	get_delete_task_use_case,
 	get_add_comment_to_task_use_case,
-	get_get_task_stats_use_case
+	get_get_task_stats_use_case,
+	get_update_task_use_case
 )
 
 tasks_router = APIRouter()
@@ -135,3 +139,16 @@ def get_task_statistics(
 		completed_tasks=task_stats.completed_tasks,
 		completion_rate=task_stats.completion_rate
 	)
+
+@tasks_router.patch("/tasks/{task_id}", tags=["Tasks"])
+def update_task(
+	task_id: int, 
+	task: UpdateTaskDTO, 
+	update_task_use_case: UpdateTaskUseCase = Depends(get_update_task_use_case)
+):
+	update_task_input = UpdateTaskInput(
+		**task.model_dump()
+	)
+	update_task_use_case(task_id=task_id, update_task_input=update_task_input)
+
+	return UpdateTaskResponseDTO()

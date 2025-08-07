@@ -5,12 +5,12 @@ from use_cases.src.task.update.input import UpdateTaskInput
 from domain.src.ports.repositories import TaskRepository, UserRepository
 
 class UpdateTaskUseCase:
-    def __init__(self, task_repo: TaskRepository, user_repo: UserRepository):
-        self.task_repo = task_repo
-        self.user_repo = user_repo
+    def __init__(self, task_repository: TaskRepository, user_repository: UserRepository):
+        self.task_repository = task_repository
+        self.user_repository = user_repository
 
     def __call__(self, task_id: int, update_task_input: UpdateTaskInput) -> None:
-        task = self.task_repo.get_by_id(task_id)
+        task = self.task_repository.get_by_id(task_id)
         if not task:
             raise TaskNotFoundError(task_id=task_id)
 
@@ -20,7 +20,7 @@ class UpdateTaskUseCase:
             task.title = update_task_input.title
 
         if update_task_input.assigned_to_id is not None:
-            user = self.user_repo.find_by_id(update_task_input.assigned_to_id)
+            user = self.user_repository.find_by_id(update_task_input.assigned_to_id)
             if not user:
                 raise UserNotFoundError(user_id=update_task_input.assigned_to_id)
             task.assigned_to = user
@@ -34,4 +34,4 @@ class UpdateTaskUseCase:
 
         task.updated_at = datetime.now().isoformat()
 
-        self.task_repo.update(task)
+        self.task_repository.update(task)

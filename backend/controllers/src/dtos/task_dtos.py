@@ -82,3 +82,7 @@ class UpdateTaskDTO(BaseModel):
     priority: Optional[str] = None
     due_date: Optional[str] = None
     assigned_to_id: Optional[int] = None 
+
+
+class UpdateTaskResponseDTO(BaseModel):
+    message: str = "Task updated successfully"

@@ -116,6 +116,6 @@ def assigned_user() -> User:
 @pytest.fixture
 def update_task_use_case(mock_task_repository, mock_user_repository):
     return UpdateTaskUseCase(
-        task_repo=mock_task_repository,
-        user_repo=mock_user_repository
+        task_repository=mock_task_repository,
+        user_repository=mock_user_repository
     )

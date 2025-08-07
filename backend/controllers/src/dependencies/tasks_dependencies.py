@@ -1,6 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from use_cases.src.task.update.use_case import UpdateTaskUseCase
 from use_cases.src.task.delete.use_case import DeleteTaskUseCase
 from use_cases.src.task.create.use_case import CreateTaskUseCase
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase
@@ -41,4 +42,10 @@ def get_add_comment_to_task_use_case(db: Session = Depends(get_db)) -> AddCommen
 def get_get_task_stats_use_case(db: Session = Depends(get_db)) -> GetTaskStatsUseCase:
 	return GetTaskStatsUseCase(
 		task_repository=SQLAlchemyTaskRepository(session=db)
+	)
+
+def get_update_task_use_case(db: Session = Depends(get_db)) -> UpdateTaskUseCase:
+	return UpdateTaskUseCase(
+		task_repository=SQLAlchemyTaskRepository(session=db),
+		user_repository=SQLAlchemyUserRepository(session=db)
 	)

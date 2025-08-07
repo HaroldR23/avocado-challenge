@@ -73,3 +73,16 @@ class GetTaskStatsResponseDTO(BaseModel):
     total_tasks: int
     completed_tasks: int
     completion_rate: float
+
+
+class UpdateTaskDTO(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    completed: Optional[bool] = None
+    priority: Optional[str] = None
+    due_date: Optional[str] = None
+    assigned_to_id: Optional[int] = None 
+
+
+class UpdateTaskResponseDTO(BaseModel):
+    message: str = "Task updated successfully"

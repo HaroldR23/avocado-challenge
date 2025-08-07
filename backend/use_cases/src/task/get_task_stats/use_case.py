@@ -1,4 +1,4 @@
-from backend.domain.src.ports.repositories.exceptions import RepositoryException
+from domain.src.ports.repositories.exceptions import RepositoryException
 from use_cases.src.task.get_task_stats.output import GetTaskStatsOutput
 from domain.src.ports.repositories import TaskRepository
 

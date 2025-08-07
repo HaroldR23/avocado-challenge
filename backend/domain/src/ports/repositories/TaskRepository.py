@@ -29,3 +29,6 @@ class TaskRepository(ABC):
 
     def get_by_id(self, task_id: int) -> Optional[Task]:
         ...
+
+    def update(self, task: Task) -> Task:
+        ...

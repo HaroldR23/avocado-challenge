@@ -3,6 +3,7 @@ from unittest.mock import MagicMock
 
 from domain.src.ports.repositories import TaskRepository, UserRepository, CommentRepository
 from domain.src.entities import User, Task, Comment
+from use_cases.src.task.update import UpdateTaskInput, UpdateTaskUseCase
 from use_cases.src.task.add_comments.use_case import AddCommentsToTaskUseCase
 from use_cases.src.task.create import CreateTaskInput
 from use_cases.src.task.get_with_filters import GetTasksInput
@@ -21,18 +22,18 @@ def create_task_input() -> CreateTaskInput:
         title="Test Task",
         description="This is a test task",
         created_by_id=1,
-        priority="MEDIUM"
+        priority="media"
     )
 
 @pytest.fixture
 def task_creator_user() -> User:
-	return User(
-		email="creator@example.com",
-		id=1,
-		username="Creator Name",
-		password_hash="hashed_password",
-		role="USER"
-	)
+    return User(
+        email="creator@example.com",
+        id=1,
+        username="Creator Name",
+        password_hash="hashed_password",
+        role="USER"
+    )
 
 @pytest.fixture
 def get_tasks_input():
@@ -54,7 +55,7 @@ def mock_task():
         id=1,
         title="Test Task",
         description="This is a test task",
-        priority="MEDIUM",
+        priority="media",
         due_date=None,
         created_by=User(id=1, username="creator", email="creator@example.com"),
         created_at="2023-10-01T00:00:00Z",
@@ -80,4 +81,41 @@ def mock_comment():
     return Comment(
         content="This is a comment",
         task_id=1,
+    )
+
+@pytest.fixture
+def update_task_input() -> UpdateTaskInput:
+    return UpdateTaskInput(
+        title="Updated Task Title",
+        description="Updated description",
+        completed=True,
+        priority="alta",
+        due_date="2024-12-31",
+        assigned_to_id=2
+    )
+
+
+@pytest.fixture
+def partial_update_input() -> UpdateTaskInput:
+    return UpdateTaskInput(
+        title="Only Title Updated",
+        assigned_to_id=None
+    )
+
+
+@pytest.fixture
+def assigned_user() -> User:
+    return User(
+        id=2,
+        username="assignee",
+        email="assignee@example.com",
+        role="USER"
+    )
+
+
+@pytest.fixture
+def update_task_use_case(mock_task_repository, mock_user_repository):
+    return UpdateTaskUseCase(
+        task_repository=mock_task_repository,
+        user_repository=mock_user_repository
     )

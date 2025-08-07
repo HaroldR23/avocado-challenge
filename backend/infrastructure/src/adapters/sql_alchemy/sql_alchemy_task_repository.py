@@ -1,6 +1,7 @@
 from domain.src.ports.repositories import TaskRepository, RepositoryException
 from domain.src.entities import Task, User
 from infrastructure.src.adapters.sql_alchemy.models import Task as TaskModel
+from infrastructure.src.adapters.sql_alchemy.models.tasks import Priority
 
 from sqlalchemy.orm import Session
 from sqlalchemy import asc, desc
@@ -150,3 +151,37 @@ class SQLAlchemyTaskRepository(TaskRepository):
         except SQLAlchemyError as e:
             self.session.rollback()
             raise RepositoryException(f"Error getting task by ID: {e}") from e
+
+
+    def update(self, task: Task) -> Task:
+        try:
+            task_to_update = self.session.query(TaskModel).filter(TaskModel.id == task.id).first()
+            if not task_to_update:
+                raise RepositoryException(f"Task with ID {task.id} not found")
+
+            task_to_update.title = task.title
+            task_to_update.description = task.description
+            task_to_update.priority = Priority(task.priority)
+            task_to_update.due_date = task.due_date if task.due_date else task_to_update.due_date
+            task_to_update.completed = task.completed
+            task_to_update.assigned_to_id = task.assigned_to.id if task.assigned_to else task_to_update.assigned_to_id
+            task_to_update.updated_at = task.updated_at
+
+            self.session.commit()
+            self.session.refresh(task_to_update)
+
+            return Task(
+                id=task_to_update.id,
+                title=task_to_update.title,
+                description=task_to_update.description,
+                priority=task_to_update.priority.value if hasattr(task_to_update.priority, 'value') else str(task_to_update.priority),
+                due_date=task_to_update.due_date,
+                completed=task_to_update.completed,
+                created_by=User(id=task.created_by.id, username=task.created_by.username, email=task.created_by.email),
+                assigned_to=User(id=task.assigned_to.id, username=task.assigned_to.username, email=task.assigned_to.email) if task.assigned_to else None,
+                created_at=task.created_at,
+                updated_at=task.updated_at
+            )
+        except SQLAlchemyError as e:
+            self.session.rollback()
+            raise RepositoryException(f"Error updating task: {e}") from e

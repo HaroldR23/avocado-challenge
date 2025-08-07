@@ -43,7 +43,7 @@ def test_create_task_use_case_raises_empty_task_title_error(
 			title="   ",
 			description="This is a test task",
 			created_by_id=1,
-			priority="MEDIUM"
+			priority="media"
 		)
 		mock_user_repository.find_by_id.return_value = task_creator_user
 		create_task_use_case = CreateTaskUseCase(
@@ -69,7 +69,7 @@ def test_create_task_use_case_raises_exception_when_user_assigned_to_task_not_fo
 			description="This is a test task",
 			created_by_id=1,
 			assigned_to_id=2,
-			priority="MEDIUM"
+			priority="media"
 		)
 		mock_user_repository.find_by_id.side_effect = [task_creator_user, None]
 		create_task_use_case = CreateTaskUseCase(

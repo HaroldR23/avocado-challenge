@@ -68,3 +68,8 @@ class AddCommentsInputDTO(BaseModel):
 
 class AddCommentsResponseDTO(BaseModel):
     message: str = "Comment added successfully"
+
+class GetTaskStatsResponseDTO(BaseModel):
+    total_tasks: int
+    completed_tasks: int
+    completion_rate: float

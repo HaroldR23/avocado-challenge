@@ -11,16 +11,20 @@ from controllers.src.dtos.task_dtos import (
 	GetTasksResponseDTO, 
 	GetTaskResponseDTO,
 	AddCommentsInputDTO,
-	AddCommentsResponseDTO
+	AddCommentsResponseDTO,
+	GetTaskStatsResponseDTO
 )
 from use_cases.src.task.create.use_case import CreateTaskUseCase, CreateTaskInput
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase, GetTasksInput
 from use_cases.src.task.add_comments.use_case import AddCommentsToTaskUseCase, AddCommentsInput
+from use_cases.src.task.get_task_stats.use_case import GetTaskStatsUseCase
+
 from controllers.src.dependencies.tasks_dependencies import (
 	get_create_task_use_case, 
 	get_get_tasks_use_case, 
 	get_delete_task_use_case,
-	get_add_comment_to_task_use_case
+	get_add_comment_to_task_use_case,
+	get_get_task_stats_use_case
 )
 
 tasks_router = APIRouter()
@@ -119,3 +123,15 @@ def add_comment_to_task(
 		)
 		add_comment_to_task_use_case(comment_input=comment_input)
 		return AddCommentsResponseDTO()
+
+@tasks_router.get("/tasks/statistics", tags=["Tasks"])
+def get_task_statistics(
+		get_task_stats_use_case: GetTaskStatsUseCase = Depends(get_get_task_stats_use_case)
+):
+	task_stats = get_task_stats_use_case()
+
+	return GetTaskStatsResponseDTO(
+		total_tasks=task_stats.total_tasks,
+		completed_tasks=task_stats.completed_tasks,
+		completion_rate=task_stats.completion_rate
+	)

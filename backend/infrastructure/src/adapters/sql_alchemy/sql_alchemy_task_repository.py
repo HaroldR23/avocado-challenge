@@ -61,7 +61,7 @@ class SQLAlchemyTaskRepository(TaskRepository):
             query = self.session.query(TaskModel)
 
             if completed:
-                query = query.filter(TaskModel.completed == completed)
+                query = query.filter(TaskModel.completed == (completed.lower() == 'completed'))
             if priority:
                 query = query.filter(TaskModel.priority == priority)
             if assigned_to:

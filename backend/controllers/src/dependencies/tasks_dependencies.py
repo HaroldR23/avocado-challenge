@@ -5,6 +5,7 @@ from use_cases.src.task.delete.use_case import DeleteTaskUseCase
 from use_cases.src.task.create.use_case import CreateTaskUseCase
 from use_cases.src.task.get_with_filters.use_case import GetTasksUseCase
 from use_cases.src.task.add_comments.use_case import AddCommentsToTaskUseCase
+from use_cases.src.task.get_task_stats.use_case import GetTaskStatsUseCase
 
 from infrastructure.src.adapters.sql_alchemy.session import get_db
 from infrastructure.src.adapters.sql_alchemy import (
@@ -35,4 +36,9 @@ def get_add_comment_to_task_use_case(db: Session = Depends(get_db)) -> AddCommen
 	return AddCommentsToTaskUseCase(
 			task_repository=SQLAlchemyTaskRepository(session=db),
 			comment_repository=SQLAlchemyCommentRepository(session=db)
+	)
+
+def get_get_task_stats_use_case(db: Session = Depends(get_db)) -> GetTaskStatsUseCase:
+	return GetTaskStatsUseCase(
+		task_repository=SQLAlchemyTaskRepository(session=db)
 	)

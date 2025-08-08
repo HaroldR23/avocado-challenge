@@ -1,8 +1,12 @@
+import Layout from './components/Layout/Layout';
+
 function App() {
   return (
-    <div>
-      Task Management Application
-    </div>
+      <Layout>
+        <div>
+          Layout Component
+        </div>
+      </Layout>
   );
 }
 

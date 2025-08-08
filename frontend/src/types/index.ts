@@ -12,6 +12,7 @@ export interface Task {
   createdAt?: Date;
   updatedAt?: Date;
   assignedTo?: string;
+  comments?: string[];
 }
 
 export interface User {

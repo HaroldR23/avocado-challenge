@@ -2,7 +2,7 @@
 
 ##  🚀 ¿Cómo levantar el projecto?
 
-Este documento explica cómo iniciar el backend de FastAPI junto con PostgreSQL usando **Docker Compose**.
+Esta primera parte del documento explica cómo iniciar el backend de FastAPI junto con PostgreSQL usando **Docker Compose**.
 
 ---
 
@@ -48,3 +48,27 @@ http://localhost:8000
 La documentación interactiva de FastAPI estará en:
 
 http://localhost:8000/docs
+
+
+En esta segunda parte se explica como levantar el frontend de nuestra aplicación
+
+## 1️⃣ Instalar dependencias
+
+Primero tiene que moverte a la carpeta /frontend, puedes hacerlo corriendo el siguiente comando:
+
+```shell
+cd /frontend
+```
+Y luego ejecuta este comando:
+
+```shell
+npm install
+```
+
+## 2️⃣ Levantar nuestro frontend
+
+Para levantar nuestro frontend basta con ejecutar este comando:
+
+```shell
+npm run dev
+```

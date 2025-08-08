@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { useAppSelector } from '../../store';
 import Header from './Header';
 import Sidebar from './Sidebar';
 
@@ -8,7 +9,8 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const themeMode = "light";
+  const themeMode = useAppSelector(state => state.theme.mode);
+
   const theme = createTheme({
     palette: {
       mode: themeMode,

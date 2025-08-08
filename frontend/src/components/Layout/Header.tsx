@@ -11,11 +11,15 @@ import {
   LightMode,
   DarkMode,
 } from '@mui/icons-material';
+import { useAppSelector, useAppDispatch } from '../../store';
+import { toggleTheme } from '../../store/slices/themeSlice';
 
 const Header: React.FC = () => {
-  const themeMode = "light"
+  const dispatch = useAppDispatch();
+  const themeMode = useAppSelector(state => state.theme.mode);
+
   const handleThemeToggle = () => {
-    console.log("It should change the theme mode")
+    dispatch(toggleTheme());
   };
 
   return (

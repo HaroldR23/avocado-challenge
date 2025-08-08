@@ -15,7 +15,6 @@ import {
   Dashboard,
   Assignment,
   BarChart,
-  AdminPanelSettings,
   ExpandLess,
   ExpandMore,
   CheckCircle,
@@ -41,10 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView = 'dashboard', onViewChang
     { id: 'in-progress', label: 'In Progress', icon: Schedule, parent: 'tasks' },
     { id: 'analytics', label: 'Analytics', icon: BarChart },
   ];
-  const currentUser = { role: 'admin' }; 
-  if (currentUser?.role === 'admin') {
-    menuItems.push({ id: 'admin', label: 'Admin Panel', icon: AdminPanelSettings });
-  }
+
 
   const handleItemClick = (itemId: string) => {
     onViewChange?.(itemId);
@@ -124,20 +120,6 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView = 'dashboard', onViewChang
             <ListItemText primary="Analytics" />
           </ListItemButton>
         </ListItem>
-
-        {currentUser?.role === 'admin' && (
-          <ListItem disablePadding>
-            <ListItemButton 
-              selected={activeView === 'admin'}
-              onClick={() => handleItemClick('admin')}
-            >
-              <ListItemIcon>
-                <AdminPanelSettings />
-              </ListItemIcon>
-              <ListItemText primary="Admin Panel" />
-            </ListItemButton>
-          </ListItem>
-        )}
       </List>
     </Drawer>
   );

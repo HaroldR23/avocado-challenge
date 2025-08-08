@@ -50,6 +50,21 @@ La documentación interactiva de FastAPI estará en:
 http://localhost:8000/docs
 
 
+## Tests
+
+Para ejecutar los tests basta con moverte a la carpeta /backend, instalar las dependencias y ejecutar los tests, como sigue:
+
+```shell
+poetry install
+```
+
+Este comando creará un virtual env el cual tienes que activar, y luego podrás ejectuar los tests como sigue:
+```shell
+pytest
+```
+
+
+
 En esta segunda parte se explica como levantar el frontend de nuestra aplicación
 
 ## 1️⃣ Instalar dependencias
